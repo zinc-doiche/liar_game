@@ -1,14 +1,14 @@
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('../config.json');
-const { getCommands } = require('./loaders/command_loader.js')
+const { registerCommands, getCommands } = require('./loaders/command_loader.js')
+const { registerEvent } = require('./loaders/event_loader.js')
 
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.commands = getCommands();
+registerEvent(client);
 
-client.once(Events.ClientReady, readyClient => {
-	console.log(`${readyClient.user.tag} 준비 완료!`);
-});
+client.commands = getCommands();
+registerCommands(client);
 
 client.login(token);

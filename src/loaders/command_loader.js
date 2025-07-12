@@ -1,9 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Collection } = require("discord.js");
+const { Collection, Events, MessageFlags } = require("discord.js");
 
 module.exports = {
-    handleCommand(client) {
+    registerCommands(client) {
         client.on(Events.InteractionCreate, async interaction => {
             if (!interaction.isChatInputCommand()) {
                 return;
