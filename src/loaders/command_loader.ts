@@ -1,20 +1,15 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { Collection, Events, MessageFlags } = require("discord.js");
+import fs from 'node:fs';
+import path from 'node:path';
+import { Collection, Events, MessageFlags, Client, Interaction, SlashCommandBuilder } from 'discord.js';
+import { Command } from "../command";
 
-module.exports = {
-    registerCommands,
-    getCommands
-}
-
-
-function registerCommands(client) {
-    client.on(Events.InteractionCreate, async interaction => {
+export function registerCommands(commands: Collection<string, Command>, client: Client) {
+    client.on(Events.InteractionCreate, async (interaction: Interaction) => {
         if (!interaction.isChatInputCommand()) {
             return;
         }
 
-        const command = interaction.client.commands.get(interaction.commandName);
+        const command = commands.get(interaction.commandName);
 
         if (!command) {
             console.error(`No command matching ${interaction.commandName} was found.`);
@@ -34,24 +29,22 @@ function registerCommands(client) {
     });
 }
 
-function getCommands() {
-    let collection = new Collection();
+export function getCommands(): Collection<string, Command> {
+    const collection = new Collection<string, Command>();
 
     const foldersPath = path.join(__dirname, '../commands');
     const commandFolders = fs.readdirSync(foldersPath);
 
     for (const folder of commandFolders) {
         const commandsPath = path.join(foldersPath, folder);
-        const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+        const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
 
         for (const file of commandFiles) {
             const filePath = path.join(commandsPath, file);
-            const command = require(filePath);
+            const command = require(filePath) as Command;
 
-            if ('data' in command && 'execute' in command) {
+            if(command) {
                 collection.set(command.data.name, command);
-            } else {
-                console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
             }
         }
     }

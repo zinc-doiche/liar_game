@@ -1,14 +1,22 @@
 {
   "main": "src/index.js",
   "scripts": {
-    "start": "node .",
-    "reload": "node ./deploy_commands.js"
+    "start": "node dist/index.js",
+    "build": "tsc -p .",
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
+    "reload": "node dist/scripts/deploy_commands.js"
   },
   "dependencies": {
-    "discord.js": "^14.21.0"
+    "discord.js": "^14.21.0",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
-    "eslint": "^9.31.0"
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.14",
+    "eslint": "^9.31.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
   }
 }
