@@ -7,7 +7,3 @@ export interface Command {
     data: SlashCommandSubcommandsOnlyBuilder;
     execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
-
-export interface CommandHolder {
-    command: Command;
-}
