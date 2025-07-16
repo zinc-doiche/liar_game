@@ -1,6 +1,7 @@
 {
   "main": "src/index.js",
   "scripts": {
+    "start": "node .",
     "reload": "node ./deploy_commands.js"
   },
   "dependencies": {
