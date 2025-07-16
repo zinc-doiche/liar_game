@@ -12,7 +12,7 @@ export function registerEvent(client: Client) {
         const eventHandler = require(filePath) as EventHandler;
         let event = eventHandler.name as keyof ClientEvents;
 
-        console.log(`Registering event: ${event}`);
+        console.log(`[Event] '${event}' 등록됨`);
 
         if (eventHandler.once) {
             client.once(event, (...args) => eventHandler.execute(...args));

@@ -9,7 +9,7 @@ export function registerCommands(commands: Collection<string, Command>, client: 
             return;
         }
 
-        const command = commands.get(interaction.commandName);
+        const command: Command | undefined = commands.get(interaction.commandName);
 
         if (!command) {
             console.error(`No command matching ${interaction.commandName} was found.`);
@@ -37,13 +37,14 @@ export function getCommands(): Collection<string, Command> {
 
     for (const folder of commandFolders) {
         const commandsPath = path.join(foldersPath, folder);
-        const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
+        const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
         for (const file of commandFiles) {
             const filePath = path.join(commandsPath, file);
             const command = require(filePath) as Command;
 
             if(command) {
+                console.log(`[Command] '${command.data.name}' 등록됨`);
                 collection.set(command.data.name, command);
             }
         }
