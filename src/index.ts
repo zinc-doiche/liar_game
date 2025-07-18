@@ -10,4 +10,5 @@ const commands: Collection<string, Command> = getCommands();
 registerEvent(client);
 registerCommands(commands, client);
 
+
 client.login(token);
