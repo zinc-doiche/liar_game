@@ -1,10 +1,12 @@
 import { SlashCommandBuilder, MessageFlags, CommandInteraction, ChatInputCommandInteraction,} from 'discord.js';
-import { createModal } from '../../modals/modal_manager';
-import {Command} from "../../command";
+import { Command } from "../../../domain/command";
+import {GameCommandHandler} from "../../../domain/handlers/game_command_handler";
 
 
 class GameCommand implements Command {
-    data = new SlashCommandBuilder()
+    public handler = new GameCommandHandler();
+
+    public data = new SlashCommandBuilder()
         .setName('라이어')
         .setDescription('라이어게임 기본 명령어')
         .addSubcommand(subCommand => subCommand
@@ -20,44 +22,27 @@ class GameCommand implements Command {
             .setName('종료')
             .setDescription('게임을 끝냅니다.'));
 
-    async execute(interaction: CommandInteraction) {
-        // ChatInputCommandInteraction 타입으로 단언
+    public async execute(interaction: CommandInteraction) {
         const chatInteraction = interaction as ChatInputCommandInteraction;
+
         switch (chatInteraction.options.getSubcommand()) {
             case '빌드':
-                await build(chatInteraction);
+                await this.handler.build(chatInteraction);
                 break;
             case '시작':
-                await start(chatInteraction);
+                await this.handler.start(chatInteraction);
                 break;
             case '컨티뉴':
-                await continueGame(chatInteraction);
+                await this.handler.continueGame(chatInteraction);
                 break;
             case '종료':
-                await stop(chatInteraction);
+                await this.handler.stop(chatInteraction);
                 break;
         }
     };
 }
 
 
-const { data, execute } = new GameCommand();
+const command = new GameCommand();
 
-export { data, execute };
-
-
-async function build(interaction: ChatInputCommandInteraction) {
-    await interaction.showModal(createModal());
-}
-
-async function start(interaction: ChatInputCommandInteraction) {
-    await interaction.reply({ content: interaction.options.getSubcommand(), flags: MessageFlags.Ephemeral })
-}
-
-async function continueGame(interaction: ChatInputCommandInteraction) {
-    await interaction.reply({ content: interaction.options.getSubcommand(), flags: MessageFlags.Ephemeral })
-}
-
-async function stop(interaction: ChatInputCommandInteraction) {
-    await interaction.reply({ content: interaction.options.getSubcommand(), flags: MessageFlags.Ephemeral })
-}
+export default command;

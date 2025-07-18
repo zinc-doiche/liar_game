@@ -1,14 +1,15 @@
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import { token } from '../config.json';
-import { registerCommands, getCommands } from './loaders/command_loader';
-import { registerEvent } from './loaders/event_loader';
-import { Command } from "./command";
+import { CommandLoader } from './discord/loaders/command_loader';
+import { EventLoader } from './discord/loaders/event_loader';
+
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const commands: Collection<string, Command> = getCommands();
+const commandLoader = new CommandLoader();
+const eventLoader = new EventLoader();
 
-registerEvent(client);
-registerCommands(commands, client);
+eventLoader.registerEvent(client);
+commandLoader.registerCommands(commandLoader.getCommands(), client);
 
 
 client.login(token);
