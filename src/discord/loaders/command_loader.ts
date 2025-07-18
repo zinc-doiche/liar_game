@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Collection, Events, MessageFlags, Client, Interaction } from 'discord.js';
-import { Command } from "../../domain/command";
+import { Command } from "../command";
 
 
 export class CommandLoader {

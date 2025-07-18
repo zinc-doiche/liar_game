@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, MessageFlags, CommandInteraction, ChatInputCommandInteraction,} from 'discord.js';
-import { Command } from "../../../domain/command";
+import { Command } from "../../command";
 import {GameCommandHandler} from "../../../domain/handlers/game_command_handler";
 
 
