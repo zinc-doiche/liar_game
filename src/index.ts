@@ -1,5 +1,8 @@
 import { Client, GatewayIntentBits } from 'discord.js';
-import { token } from '../config.json';
+import { token, openAIToken } from '../config.json';
+
+process.env.OPENAI_API_KEY = openAIToken;
+
 import { CommandLoader } from './discord/loaders/command_loader';
 import { EventLoader } from './discord/loaders/event_loader';
 
