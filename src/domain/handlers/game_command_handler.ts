@@ -12,7 +12,7 @@ export class GameCommandHandler {
     private gameStorage = new GameStorage();
     private gameManager = new GameManager();
     private gameHandler = new GameHandler();
-    private openAIManager = new OpenAIManager("gpt-o4-mini", 0.5);
+    private openAIManager = new OpenAIManager();
 
     public async build(interaction: ChatInputCommandInteraction) {
         await this.gameStorage.ifPresent(async (game) => {
@@ -47,11 +47,20 @@ export class GameCommandHandler {
                 const userIds = game.getUsers();
 
                 if(userIds.length > 2) {
-                    const theme = await this.openAIManager.createNewTheme();
+                    const theme = await this.openAIManager.createNewTheme({
+                        model: 'o4-mini-2025-04-16',
+                        prompt: "한국의 20대 남성들이 잘 알 만한 주제와 제시어, 그리고 미스매치로 테마 만들어줘",
+                    });
+
+                    console.log("theme: {}", theme);
+
+                    const validatedTheme =  await this.openAIManager.validateTheme('gpt-4o-mini', theme);
+
+                    console.log("validatedTheme: {}", validatedTheme);
 
                     game.start();
                     await interaction.reply({ content: "게임을 시작합니다!" });
-                    await this.gameHandler.start(interaction, game, theme);
+                    await this.gameHandler.start(interaction, game, validatedTheme.theme);
                     return;
                 }
                 await interaction.reply({

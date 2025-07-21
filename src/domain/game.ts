@@ -1,8 +1,18 @@
+import { GameMeta } from "./game_meta";
 
 
 export class Game {
     private state: State = State.BUILDING;
     private users: Array<string> = []
+    private gameMeta: GameMeta | undefined;
+
+    public getGameMeta(): GameMeta {
+        return this.gameMeta!!;
+    }
+
+    public setGameMeta(gameMeta: GameMeta) {
+        this.gameMeta = gameMeta;
+    }
 
     public getUsers(): Array<string> {
         return this.users;
