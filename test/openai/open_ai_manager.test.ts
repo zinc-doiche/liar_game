@@ -1,13 +1,13 @@
-import {OpenAIManager} from "../../src/openai/open_ai_manager";
-import {openAIToken} from "../../config.json";
+import { OpenAIManager } from "../../src/openai/open_ai_manager";
+import { openAIToken } from "../../config.json";
 
 process.env.OPENAI_API_KEY = openAIToken;
 
-const openAIManager = new OpenAIManager('o4-mini', 1);
+const openAIManager = new OpenAIManager();
 
 
 test('createNewTheme', async () => {
-    const theme = await openAIManager.createNewTheme();
+    const theme = await openAIManager.createNewTheme('4o-mini');
 
     console.log(theme);
 
